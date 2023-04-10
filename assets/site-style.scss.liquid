@@ -1,0 +1,298 @@
+body{
+    background-color: #E5E5E5 !important;
+}
+.container {
+    @media screen and (min-width: 1400px) {
+        max-width: 1382px !important;
+    }
+    @media screen and (max-width: 769px) {
+        max-width: 100% !important;
+    }
+}
+#shopify-section-header{
+    margin-bottom: 40px;
+    .header-container{
+        position: relative;
+        padding: 44px 0;
+        @media screen and (max-width: 769px) {
+            padding: 34px 0 0;
+        }
+        .navigation-area{
+            .row > div {
+                position: relative;
+                z-index: 5;
+            }
+        } 
+        .logo-area{
+            position: relative;
+            top: -40px;
+            margin-top: 0px;
+            transition: all 0.4s ease-in-out;
+        }
+        .logo-text-content{
+            display: none;
+            @media screen and (max-width: 769px) {
+                padding-left: 100px;
+                padding-top: 30px;
+            }
+            h3{
+                font-family: 'GTSuperDisplay';
+                font-feature-settings: 'pnum' on, 'lnum' on;
+                font-weight: 400;
+                font-size: 18px;
+            }
+        }
+
+        .header-logo{
+            
+            transition: all 0.4s ease-in-out;
+            svg{
+                width: 920px;
+                max-width: 180px;
+                transition: all 0.4s ease-in-out;
+            }
+        }
+
+        &.hovered{
+            .logo-area{
+                top: 0px;
+                margin-top: 70px;
+                .header-logo{
+                    svg{
+                        max-width: 920px;
+                        @media screen and (max-width: 1399px) {
+                            max-width: 740px;
+                        }
+                        @media screen and (max-width: 1199px) {
+                            max-width: 570px;
+                        }
+                        @media screen and (max-width: 768px) {
+                            max-width: 350px;
+                        }
+                    }
+                }
+            }
+            .logo-text-content{
+                display: block;
+            }
+        }
+    }
+    
+}
+nav.header-nav{
+    ul{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        li {
+            padding: 5px 17px;
+            a{
+                font-family: 'Platform';
+                color: #000;
+                font-weight: 600;
+                letter-spacing: 0.25em;
+                text-transform: uppercase;
+                font-size: 14px;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+.card-box{
+    position: relative;
+    padding: 10px;
+    height: 100%;
+    &.image-as-bg{
+        padding: 0;
+        .card-text-content{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 3;
+        }
+    }
+}
+.card-image-content{
+    canvas{
+        background-size: cover;
+        background-repeat: no-repeat;
+        display: block;
+        width: 100%;
+    }
+}
+
+.card-text-content{
+    a.cta{
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        font-weight: 600;
+    }
+}
+
+.slide-on-mobile{
+    @media screen and (max-width: 769px) {
+        overflow: hidden;
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0px;
+            width: 30px;
+            height: 100%;
+            z-index: 9;
+            background: rgb(255,255,255);
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(229,229,229,1) 65%);
+        }
+    }
+    
+    .slick-list{
+        @media screen and (max-width: 769px) {
+            width: 80%;
+            overflow: visible;
+        }
+        
+    }
+    .slick-slide{
+        padding: 0 5px;
+    }
+}
+.slick-slider{
+    .slick-arrow{
+        position: absolute;
+        z-index: 9;
+        top: calc(50% - 15px);
+        width: 30px;
+        height: 30px;
+        border: 0;
+        border-radius: 50%;
+        font-size: 0;
+        margin: 0;
+        padding: 0;
+        &::before{
+            font-size: 19px;
+            font-weight: 300;
+        }
+        &.slick-prev{
+            left: 15px;
+            &::before{
+                content: "←";
+            }
+            
+        }
+        &.slick-next{
+            right: 15px;
+            &::before{
+                content: "→";
+            }
+        }
+        &.slick-disabled{
+            opacity: 0;
+        }
+    }
+}
+
+
+.product-card{
+    
+    .product-image{
+        img{
+            width: 100%;
+        }
+    }
+    .product-meta{
+        background: #fff;
+        padding: 15px 18px;
+        .product-title{
+            font-family: 'GTSuperDisplay';
+            font-style: italic;
+            font-size: 24px;
+        }
+        .product-price{
+            text-align: right;
+            font-weight: 700;
+        }
+    }
+}
+
+.feat-product-slider{
+    @media screen and (max-width: 769px) {
+        &::before, &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            width: 30px;
+            height: 100%;
+            z-index: 9;
+            background: white;
+        }
+        &::before{
+            left: 0;
+            background: linear-gradient(-90deg,rgba(255,255,255,0) 0%,#e5e5e5 65%);
+        }
+        &::after {
+            right: 0;
+            background: linear-gradient(90deg,rgba(255,255,255,0) 0%,#e5e5e5 65%);
+        }
+    }
+    .slick-slide{
+        padding: 0 1px;
+    }
+    .slick-list{
+        width: calc(100% - 100px);
+        margin: 0 auto;
+        @media screen and (max-width: 769px) {
+            width: 100%;
+        }
+    }
+    a{
+        color: #000;
+        text-decoration: none;
+    }
+    .slick-arrow{
+        background-color: transparent;
+        &.slick-prev {
+            left: -10px;
+            @media screen and (max-width: 769px) {
+                left: 15px;
+            }
+        }
+        &.slick-next {
+            right: -10px;
+            @media screen and (max-width: 769px) {
+                right: 15px;
+            }
+        }
+    }
+    
+}
+
+.header-cart{
+    position: relative;
+    .cart-count{
+        position: absolute;
+        top: 6px;
+        left: 5px;
+        font-size: 11px;
+        color: #000;
+    }
+}
+
+.toast {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+}
+
+.cta-link{
+    font-family: 'Platform';
+    color: #000;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-transform: uppercase;
+}

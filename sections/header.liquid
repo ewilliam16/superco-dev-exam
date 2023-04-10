@@ -1,0 +1,63 @@
+<div class="container">
+<div class="header-container">
+    <div class="navigation-area">
+        <div class="row justify-content-end align-items-center">
+            <div class="col-auto d-none d-lg-block">
+                <nav class="header-nav" role="navigation">
+                <ul>
+                    {%- for link in linklists.main-menu.links -%}
+                    <li>
+                        <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+                        {{ link.title }}
+                        </a>
+
+                        {%- if link.links != blank -%}
+                        <ul>
+                            {%- for child_link in link.links -%}
+                            <li>
+                                <a href="{{ child_link.url }}" {% if child_link.active %}aria-current="page"{% endif %}>
+                                {{ child_link.title }}
+                                </a>
+
+                                {%- if child_link.links != blank -%}
+                                <ul>
+                                    {%- for grandchild_link in child_link.links -%}
+                                    <li>
+                                        <a href="{{ grandchild_link.url }}" {% if grandchild_link.active %}aria-current="page"{% endif %}>
+                                        {{ grandchild_link.title }}
+                                        </a>
+                                    </li>
+                                    {%- endfor -%}
+                                </ul>
+                                {%- endif -%}
+
+                            </li>
+                            {%- endfor -%}
+                        </ul>
+                        {%- endif -%}
+
+                    </li>
+                    {%- endfor -%}
+                </ul>
+            </div>
+            <div class="col-auto">
+                {% render 'icon-search' %}
+            </div>
+            <div class="col-auto">
+                <a href="/cart" class="header-cart">{% render 'icon-cart' %}<span class="cart-count">{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span></a>
+            </div>
+            <div class="col-auto d-lg-none">
+                {% render 'icon-burger-menu' %}
+            </div>
+        </div>
+    </div>
+    <div class="logo-area">
+    <div class="row justify-content-between align-items-center">
+        <div class="col-md-auto">
+            <div class="header-logo"><a href="/">{% render 'icon-logo'%}</a></div>
+        </div>
+        <div class="col-lg-3 logo-text-content"><h3>Parties? Fun. Planning them? Not so much. We curate ready-to-go kits that make throwing a party easy. No occasion necessary.</h3></div>
+    </div>
+    </div>
+</div>
+</div>

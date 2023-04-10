@@ -1,0 +1,451 @@
+{% assign block_size = section.blocks.size %}
+{%- capture col_size -%}
+{%- case block_size -%}
+  {%- when 1 -%}
+    col-md-12
+  {%- when 2 -%}
+    col-md-6
+  {%- when 3 -%}
+    col-md-4
+  {%- when 4 -%}
+    col-lg-3 col-md-6
+  {%- else -%}
+    col
+{%- endcase -%}
+{%- endcapture -%}
+<div class="container" id="{{section.id}}">
+    {% if section.settings.title != blank %}<h2 class="{{section.id}}__section-title {{ section.settings.heading_font_style }}-font">{{ section.settings.title }}</h2>{% endif %}
+    <div class="content-card-row">
+        <div class="row g-2 {% if section.settings.slide_on_mobile %}slide-on-mobile{% endif %}">
+            {%- for block in section.blocks -%}
+                <div class="{{ col_size }} ">
+                    <div class="card-box {% if section.settings.use_as_background %}image-as-bg{% endif %}" style="background-color:{{ block.settings.background_color }};">
+                        <div class="card-image-content">
+                        {% if block.settings.image != blank %}
+                            <canvas
+                            {% if section.settings.image_orientation == 'adapt' %}
+                            width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"
+                            {% elsif section.settings.image_orientation == 'portrait' %}
+                            width="675" height="800"
+                            {% elsif section.settings.image_orientation == 'landscape' %}
+                            width="312" height="224"
+                            {%-elsif section.settings.image_orientation == 'square' %}
+                            width="225" height="225"
+                            {% endif %}
+                            style="background-image:url({{ block.settings.image | img_url: 'master' }});">
+                            </canvas>
+                        {% endif %}
+                        </div>
+                        <div class="card-text-content">
+                            {% if block.settings.title != blank %}<h3 class="{{ section.settings.card_heading_font_style }}-font">{{ block.settings.title }}</h3>{% endif %}
+                            {% if block.settings.text != blank %}{{ block.settings.text }}{% endif %}
+                            {% if block.settings.link != blank %}<a href="{{ block.settings.link }}" class="cta">{{ block.settings.link_label }}</a>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            {%- endfor -%}
+        </div>
+    </div>
+</div>
+{% style %}
+#{{section.id}}{
+    margin-bottom: {{ section.settings.section_bottom_space }}px;
+}
+.{{section.id}}__section-title{
+    font-size:{{ section.settings.heading_font_size }}px;
+    text-align: {{ section.settings.heading_text_alignment }};
+    text-transform: {{ section.settings.heading_text_tranform }};
+    margin-bottom: {{ section.settings.heading_bottom_space }}px;
+}
+#{{section.id}} .card-box{
+    text-align: {{ section.settings.content_alignment }}
+}
+#{{section.id}} .card-box h3{
+    font-size:{{ section.settings.card_heading_font_size }}px;
+}
+#{{section.id}} .card-box p{
+    font-size:{{ section.settings.card_paragraph_font_size }}px;
+    {% if section.settings.card_paragraph_font_style == 'heading' %}
+        font-family: 'GTSuperDisplay';
+        font-feature-settings: 'pnum' on, 'lnum' on;
+    {% else %}
+        font-family: 'Platform';
+    {% endif %}
+}
+#{{section.id}} .card-box *{
+    color: {{ section.settings.content_font_color }};
+}
+#{{section.id}} .card-box .cta{
+    font-size:{{ section.settings.link_font_size }}px;
+}
+#{{section.id}} .card-box .card-text-content{
+    padding: {{ section.settings.card_content_padding }}px {{ section.settings.card_content_padding_lr }}px;
+}
+
+@media screen and (max-width: 1400px) {
+#{{section.id}} .card-box h3{
+    {% if section.settings.card_heading_font_size > 45 %}
+        font-size:{{ section.settings.card_heading_font_size | divided_by: 1.5  }}px;
+    {% endif %}
+}
+@media screen and (max-width: 769px) {
+    .{{section.id}}__section-title{
+        font-size:{{ section.settings.heading_font_size | divided_by: 2 }}px;
+        margin-bottom: {{ section.settings.heading_bottom_space | divided_by: 2 }}px;
+    }
+    #{{section.id}} .card-box .card-text-content{
+        padding: {{ section.settings.card_content_padding | divided_by: 2 }}px {{ section.settings.card_content_padding_lr | divided_by: 2 }}px;
+    }
+    #{{section.id}} .card-box h3{
+        {% if section.settings.card_heading_font_size > 45 %}
+            font-size:{{ section.settings.card_heading_font_size | divided_by: 2  }}px;
+        {% else %}
+            font-size:{{ section.settings.card_heading_font_size | minus: 10  }}px;
+        {% endif %}
+    }
+    #{{section.id}} .card-box .cta{
+        font-size:{{ section.settings.link_font_size | minus: 2 }}px;
+    }
+}
+{% endstyle %}
+{% schema %}
+{
+  "name": "Content Card",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Options"
+    },
+    {
+      "type": "range",
+      "id": "section_bottom_space",
+      "min": 10,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px",
+      "label": "Section Bottom Space"
+    },
+    {
+      "type": "header",
+      "content": "Heading Options"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Content Card",
+      "label": "Section Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_style",
+      "options": [
+        {
+          "value": "heading",
+          "label": "Heading"
+        },
+        {
+          "value": "body",
+          "label": "Body"
+        }
+      ],
+      "default": "heading",
+      "label": "Font Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_tranform",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "none",
+      "label": "Text Transform"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 16,
+      "max": 90,
+      "step": 2,
+      "default": 40,
+      "unit": "px",
+      "label": "Heading Font Size"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Text Alignment"
+    },
+    {
+      "type": "range",
+      "id": "heading_bottom_space",
+      "min": 10,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px",
+      "label": "Heading Bottom Space"
+    },
+    {
+      "type": "header",
+      "content": "Image Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_orientation",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to Image"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "landscape",
+      "label": "Image Orientation"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_as_background",
+      "default": false,
+      "label": "Use as background"
+    },
+    {
+      "type": "header",
+      "content": "Card Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "slide_on_mobile",
+      "default": false,
+      "label": "Slide on Mobile"
+    },
+    {
+        "type": "range",
+        "id": "card_content_padding",
+        "min": 5,
+        "max": 90,
+        "step": 5,
+        "default": 10,
+        "unit": "px",
+        "label": "Content Padding Top/Bottom"
+    },
+    {
+        "type": "range",
+        "id": "card_content_padding_lr",
+        "min": 5,
+        "max": 90,
+        "step": 5,
+        "default": 25,
+        "unit": "px",
+        "label": "Content Padding Left/Right"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Content Alignment"
+    },
+    {
+        "type": "color",
+        "id": "content_font_color",
+        "label": "Text Color",
+        "default": "#000000"
+    },
+    {
+        "type": "range",
+        "id": "card_heading_font_size",
+        "min": 16,
+        "max": 90,
+        "step": 2,
+        "default": 32,
+        "unit": "px",
+        "label": "Heading Font Size"
+    },
+    {
+        "type": "select",
+        "id": "card_heading_font_style",
+        "options": [
+            {
+            "value": "heading",
+            "label": "Heading"
+            },
+            {
+            "value": "body",
+            "label": "Body"
+            }
+        ],
+        "default": "heading",
+        "label": "Font Style"
+    },
+    {
+        "type": "range",
+        "id": "card_paragraph_font_size",
+        "min": 12,
+        "max": 90,
+        "step": 2,
+        "default": 14,
+        "unit": "px",
+        "label": "Card Paragraph Font Size"
+    },
+    {
+        "type": "select",
+        "id": "card_paragraph_font_style",
+        "options": [
+            {
+            "value": "heading",
+            "label": "Heading"
+            },
+            {
+            "value": "body",
+            "label": "Body"
+            }
+        ],
+        "default": "heading",
+        "label": "Card Font Style"
+    },
+    {
+        "type": "range",
+        "id": "link_font_size",
+        "min": 12,
+        "max": 90,
+        "step": 2,
+        "default": 14,
+        "unit": "px",
+        "label": "Link Font Size"
+    },
+    {
+        "type": "select",
+        "id": "link_font_style",
+        "options": [
+            {
+            "value": "heading",
+            "label": "Heading"
+            },
+            {
+            "value": "body",
+            "label": "Body"
+            }
+        ],
+        "default": "body",
+        "label": "Link Style"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "default": "Card Title",
+          "label": "Card Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Everything you need for a great party, from decor to drinks and games. </p>",
+          "label": "Card Paragraph"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Card Link Label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card Link URL"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Content Card",
+      "blocks": [
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,166 @@
+<div class="container" id="{{section.id}}">
+    {% if section.settings.title != blank %}<h2 class="{{section.id}}__section-title {{ section.settings.heading_font_style }}-font">{{ section.settings.title }}</h2>{% endif %}
+    {%- assign featured_products = collections[section.settings.collection_to_feature] -%}
+    {%- if featured_products != empty -%}
+        <div class="row feat-product-slider">
+        {%- for product in featured_products.products -%}
+            <div class="col-md-4">
+            <a href="#" class="quick-add-to-cart" data-varid="{{ product.selected_or_first_available_variant.id }}">
+                <div class="product-card">
+                    <div class="product-image">
+                        {% render 'responsive-image', imageSrc: product.featured_image, firstLoadWidth: '420x' %}
+                    </div>
+                    <div class="product-meta">
+                        <div class="row align-items-center">
+                            <div class="col product-title">{{ product.title }}</div>
+                            <div class="col-auto product-price">{{ product.price | money_without_trailing_zeros }}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            </div>
+        {%- endfor -%}
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-auto"><a href="#" class="cta-link">Shop All</a></div>
+        </div>
+    {%- endif -%}
+</div>
+{% style %}
+#{{section.id}}{
+    margin-bottom: {{ section.settings.section_bottom_space }}px;
+}
+.{{section.id}}__section-title{
+    font-size:{{ section.settings.heading_font_size }}px;
+    text-align: {{ section.settings.heading_text_alignment }};
+    text-transform: {{ section.settings.heading_text_tranform }};
+    margin-bottom: {{ section.settings.heading_bottom_space }}px;
+}
+{% endstyle %}
+{% schema %}
+{
+  "name": "Featured Products",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Options"
+    },
+    {
+      "type": "range",
+      "id": "section_bottom_space",
+      "min": 10,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px",
+      "label": "Section Bottom Space"
+    },
+    {
+      "type": "header",
+      "content": "Heading Options"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Featured Products",
+      "label": "Section Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_style",
+      "options": [
+        {
+          "value": "heading",
+          "label": "Heading"
+        },
+        {
+          "value": "body",
+          "label": "Body"
+        }
+      ],
+      "default": "heading",
+      "label": "Font Style"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_tranform",
+      "options": [
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "none",
+      "label": "Text Transform"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 16,
+      "max": 90,
+      "step": 2,
+      "default": 40,
+      "unit": "px",
+      "label": "Heading Font Size"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Text Alignment"
+    },
+    {
+      "type": "range",
+      "id": "heading_bottom_space",
+      "min": 10,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px",
+      "label": "Heading Bottom Space"
+    },
+    {
+        "type": "collection",
+        "id": "collection_to_feature",
+        "label": "Collection",
+        "info": "Select a Collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}
